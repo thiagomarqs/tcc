@@ -5,11 +5,12 @@ export type CaptchaProps = {
   onError: (error: any) => void;
 }
 
+const sitekey = import.meta.env.VITE_SITEKEY;
+
 export const Captcha = (props: CaptchaProps) => {
   return (
     <Turnstile
-      sitekey="0x4AAAAAAADD6m4_LYaAZ-bI"
-      // sitekey="1x00000000000000000000AA"
+      sitekey={sitekey}
       onVerify={props.onVerify}
       onError={props.onError}
     />

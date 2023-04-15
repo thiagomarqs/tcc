@@ -1,19 +1,21 @@
-export interface CaptchaVerificationResponse {
-  isTokenValid: boolean;
+import axios, { AxiosResponse } from 'axios';
+
+export interface CaptchaValidationResponse {
+  isValid: boolean;
 }
+
+const endpoint = import.meta.env.VITE_CAPTCHA_VALIDATION_ENDPOINT;
 
 export class CaptchaService {
   
   /**
    * Calls the backend and returns whether the CAPTCHA is valid or not.
    */
-  public static async verify(token: string): Promise<CaptchaVerificationResponse> {
-    
-    console.log(token);
+  public static async validate(token: string): Promise<CaptchaValidationResponse> {
 
-    return {
-      isTokenValid: true,
-    };
+    const result = await axios.post<CaptchaValidationResponse>(endpoint, {token: token});
+    
+    return result.data;
   }
 
 }
