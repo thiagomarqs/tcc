@@ -11,7 +11,7 @@ public class Http {
 	public static String post(String url, String body) throws Exception {
 		String result = "No content.";
 		
-		System.out.printf("Performing Request. Url: %s | Body: %s\n", url, body);
+		System.out.printf("\n[Request]: POST - URL: %s - body: %s\n", url, body);
 		
 		try (final CloseableHttpClient httpclient = HttpClients.createDefault()) {
             final HttpPost post = new HttpPost(url);
@@ -19,8 +19,12 @@ public class Http {
             post.setEntity(new StringEntity(body));
             post.setHeader("Content-Type", "application/json");
             
-            result = httpclient.execute(post, response -> {
-            	return EntityUtils.toString(response.getEntity());
+            result = httpclient.execute(post, res -> {
+            	var response = EntityUtils.toString(res.getEntity());
+            	
+            	System.out.printf("\n[Response]: URL: %s - content: %s\n", url, response);
+            	
+            	return response;
             });
             
         } 

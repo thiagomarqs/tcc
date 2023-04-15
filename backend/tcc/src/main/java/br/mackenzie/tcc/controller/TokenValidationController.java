@@ -1,16 +1,16 @@
 package br.mackenzie.tcc.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
+import br.mackenzie.tcc.dto.SiteVerifyRequest;
+import br.mackenzie.tcc.dto.SiteVerifyResponse;
 import br.mackenzie.tcc.dto.TokenValidationRequest;
 import br.mackenzie.tcc.dto.TokenValidationResponse;
-import br.mackenzie.tcc.model.SiteVerifyRequest;
-import br.mackenzie.tcc.model.SiteVerifyResponse;
 import br.mackenzie.tcc.utils.Http;
 
 /**
@@ -21,21 +21,22 @@ import br.mackenzie.tcc.utils.Http;
 public class TokenValidationController {
 	
 	final String endpoint = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
-	final String key = "0x4AAAAAAADD6m4_LYaAZ-bI";
+	final String secret = "0x4AAAAAAADD6rX0xs6GYQi1rz3rxXJ24qs";
 	
 	final Gson gson = new Gson();
 	
-	@GetMapping
+	@PostMapping
 	public TokenValidationResponse validate(@RequestBody TokenValidationRequest request) throws Exception {
 		String token = request.token();
-		SiteVerifyRequest siteVerifyRequest = new SiteVerifyRequest(key, token, null);
+		SiteVerifyRequest siteVerifyRequest = new SiteVerifyRequest(secret, token, null);
 		String siteVerifyRequestJson = gson.toJson(siteVerifyRequest);
 		String siteVerifyResponseJson = Http.post(endpoint, siteVerifyRequestJson);
 		SiteVerifyResponse siteVerifyResponse = gson.fromJson(siteVerifyResponseJson, SiteVerifyResponse.class);
+
+		var isSuccess = siteVerifyResponse.success();
+		var errorCodes = siteVerifyResponse.errorCodes();
 		
-		System.out.println(siteVerifyResponseJson);
-		
-		return new TokenValidationResponse(siteVerifyResponse.success());
+		return new TokenValidationResponse(isSuccess, errorCodes);
 	}
 
 }
