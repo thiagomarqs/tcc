@@ -1,0 +1,11 @@
+TODO -> Utilizar <form> no formulário de login?
+TODO -> Página protegida deve receber um token JWT. Caso o token seja inválido, a página não funcionará.
+
+Ideia da "arquitetura":
+1. Captcha passa token para função de validação.
+2. Função de validação chama o backend para validar o token do Captcha.
+3. Backend retorna a resposta e em caso de sucesso, retorna um token JWT.
+4. A função de validação retorna o token JWT ou null.
+5. O botão é liberado somente se houver o token JWT. Este mesmo token será guardado para acessar a paginaProtegida.
+6. Ao clicar em login, é redirecionado para a paginaProtegida.
+7. paginaProtegida chama o backend para testar o token. Exibe mensagem de sucesso ou insucesso dependendo da situação.
