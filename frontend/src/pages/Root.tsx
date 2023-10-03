@@ -1,3 +1,4 @@
+import { Box } from "@mui/material"
 import { Link, Outlet } from "react-router-dom"
 
 export const Root = () => {
@@ -7,6 +8,10 @@ export const Root = () => {
         <h1 className="font-bold text-4xl">
           <Link to="/">Experimento Turnstile</Link>
         </h1>
+        <Box className="flex justify-evenly my-3 pt-3 border-t-2">
+          <Link to="/">Início</Link>
+          <Link to="/login">Login</Link>
+        </Box>
       </div>
       <Outlet/>
     </div>
